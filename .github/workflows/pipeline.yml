@@ -37,7 +37,10 @@ jobs:
       - name: Run Application Container
         run: |
           docker run -d -p 8000:8000 devsecops-app:latest
-          sleep 15
+          sleep 20
+
+      - name: Fix Permissions for ZAP
+        run: sudo chmod -R 777 $GITHUB_WORKSPACE
 
       - name: Container Security Scan (Trivy)
         uses: aquasecurity/trivy-action@master
@@ -50,3 +53,5 @@ jobs:
         with:
           target: "http://localhost:8000"
           fail_action: false
+        env:
+          HOME: /tmp
